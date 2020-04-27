@@ -1,0 +1,97 @@
+<html>
+<head>
+  <title>Birampur</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+   <script src="leaflet-hash.js"></script>
+
+
+<!--      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script> -->
+
+
+  <style>
+    #body{background: #DDDDDD;
+    padding: 0px;
+    margin:0px;}
+    #map{ height: 100%;
+    padding: 0px;
+    margin:0px;}
+  </style>
+</head>
+<div id="body">
+
+  <div id="map"></div>
+
+  <script>
+
+
+  // initialize the map
+  var map = L.map('map').setView([25.3869, 88.9927], 15);
+
+      // This is the Carto Positron basemap
+    var hash = new L.Hash(map);
+
+
+  // load a tile layer
+  L.tileLayer('Tiles/{z}/{x}/{y}.png',
+    {
+      attribution: 'Tiles by <a href="http://mapc.org">MAPC</a>, Data by <a href="http://mass.gov/mgis">MassGIS</a>',
+      maxZoom: 19,
+      minZoom: 12
+    }).addTo(map);
+
+
+
+
+  //bound box
+// var bounds_group = new L.featureGroup([]);
+//         function setBounds() {
+//             if (bounds_group.getLayers().length) {
+//                 map.fitBounds(bounds_group.getBounds());
+//             }
+//             map.setMaxBounds(map.getBounds());
+//         }setBounds();
+
+    //logo position: bottomright, topright, topleft, bottomleft
+    var logo = L.control({position: 'bottomright'});
+    logo.onAdd = function(map){
+        var div = L.DomUtil.create('div', 'myclass');
+        div.innerHTML= "<img src='boil.png'/>";
+        return div;
+    }
+    logo.addTo(map);
+
+
+    //Scale
+    L.control.scale().addTo(map);
+
+
+//         function onLocationFound(e) {
+//         var radius = e.accuracy / 2;
+
+//         L.marker(e.latlng).addTo(map)
+//             .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+//         L.circle(e.latlng, radius).addTo(map);
+//     }
+
+//     function onLocationError(e) {
+//         alert(e.message);
+//     }
+
+//     map.on('locationfound', onLocationFound);
+//     map.on('locationerror', onLocationError);
+
+//     map.locate({setView: true, maxZoom: 16});
+
+  </script>
+</div>
+</html>

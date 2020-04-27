@@ -1,70 +1,80 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Birampur</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-   crossorigin=""></script>
-   <script src="leaflet-hash.js"></script>
+  <meta charset="utf-8" />
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!--      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script> -->
-
-
-  <style>
-    #body{background: #DDDDDD;
-    padding: 0px;
-    margin:0px;}
-    #map{ height: 100%;
-    padding: 0px;
-    margin:0px;}
+  <link rel="stylesheet" href="leaflet.css" />
+  <link href="L.Control.Locate.min.css" rel="stylesheet">
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+  <style type="text/css">
+    body {
+            padding: 0;
+            margin: 0;
+        }
+        #map {
+            position:absolute;
+            z-index:0;
+            height: 100%;
+            width: 100%;
+        }
   </style>
-</head>
-<div id="body">
-
-  <div id="map"></div>
-
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script src="leaflet.js"></script>
+  <script src="leaflet-hash.js"></script>
+  <script src="L.Control.Locate.min.js"></script>
+  <script src="OSMBuildings-Leaflet.js"></script>
   <script>
+    $(document).ready(function () {
 
-
-  // initialize the map
-  var map = L.map('map').setView([25.3869, 88.9927], 15);
+      var map = L.map('map').setView([25.3921, 88.9546], 12);
 
       // This is the Carto Positron basemap
-    var hash = new L.Hash(map);
+        var hash = new L.Hash(map);
 
 
-  // load a tile layer
-  L.tileLayer('Tiles/{z}/{x}/{y}.png',
-    {
-      attribution: 'Tiles by <a href="http://mapc.org">MAPC</a>, Data by <a href="http://mass.gov/mgis">MassGIS</a>',
-      maxZoom: 19,
-      minZoom: 12
-    }).addTo(map);
+      var baselayer = L.tileLayer("../tst/assets/maps/bp/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        minZoom: 12,
+        attribution:''
+      }).addTo(map);
 
 
+      var gimage =L.tileLayer('Tiles/gimage/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        minZoom: 12,
+        tms: false,
+        attribution: ''
+      });
 
 
-  //bound box
-// var bounds_group = new L.featureGroup([]);
-//         function setBounds() {
-//             if (bounds_group.getLayers().length) {
-//                 map.fitBounds(bounds_group.getBounds());
-//             }
-//             map.setMaxBounds(map.getBounds());
-//         }setBounds();
+      var smap = new OSMBuildings(map).load('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
 
-    //logo position: bottomright, topright, topleft, bottomleft
-    var logo = L.control({position: 'bottomright'});
+      var rmap =L.tileLayer('Tiles/bw/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        minZoom: 12,
+        tms: false,
+        attribution: ''
+      });
+
+
+      var overlayMaps = {        
+        "3D Map" : smap,
+        "Road Map" : rmap,
+        "Google Satellite images" : gimage
+      
+      }
+
+      L.control.layers({'Birampur':baselayer},overlayMaps).addTo(map);
+
+          //logo position: bottomright, topright, topleft, bottomleft
+       var logo = L.control({position: 'bottomright'});
     logo.onAdd = function(map){
         var div = L.DomUtil.create('div', 'myclass');
-        div.innerHTML= "<img src='boil.png'/>";
+        div.innerHTML= "<a href='madmappers.github.io' target='_blank'><img height='50px' src='boil.png'/></a>";
         return div;
     }
     logo.addTo(map);
@@ -73,25 +83,59 @@
     //Scale
     L.control.scale().addTo(map);
 
+    L.control.locate().addTo(map);
 
-//         function onLocationFound(e) {
-//         var radius = e.accuracy / 2;
 
-//         L.marker(e.latlng).addTo(map)
-//             .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-//         L.circle(e.latlng, radius).addTo(map);
-//     }
-
-//     function onLocationError(e) {
-//         alert(e.message);
-//     }
-
-//     map.on('locationfound', onLocationFound);
-//     map.on('locationerror', onLocationError);
-
-//     map.locate({setView: true, maxZoom: 16});
-
+    })
   </script>
-</div>
+</head>
+<body oncontextmenu="return false;">
+  <div id="map">
+    </div>
+        <script language="JavaScript">
+  /**
+    * Disable right-click of mouse, F12 key, and save key combinations on page
+    * By Arthur Gareginyan (https://www.arthurgareginyan.com)
+    * For full source code, visit https://mycyberuniverse.com
+    */
+  window.onload = function() {
+    document.addEventListener("contextmenu", function(e){
+      e.preventDefault();
+    }, false);
+    document.addEventListener("keydown", function(e) {
+    //document.onkeydown = function(e) {
+      // "I" key
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+        disabledEvent(e);
+      }
+      // "J" key
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+        disabledEvent(e);
+      }
+      // "S" key + macOS
+      if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        disabledEvent(e);
+      }
+      // "U" key
+      if (e.ctrlKey && e.keyCode == 85) {
+        disabledEvent(e);
+      }
+      // "F12" key
+      if (event.keyCode == 123) {
+        disabledEvent(e);
+      }
+    }, false);
+    function disabledEvent(e){
+      if (e.stopPropagation){
+        e.stopPropagation();
+      } else if (window.event){
+        window.event.cancelBubble = true;
+      }
+      e.preventDefault();
+      return false;
+    }
+  };
+</script>
+
+</body>
 </html>
