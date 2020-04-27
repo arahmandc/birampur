@@ -43,7 +43,7 @@
       }).addTo(map);
 
 
-      var gimage =L.tileLayer('Tiles/gimage/{z}/{x}/{y}.png', {
+      var gimage =L.tileLayer('Tiles/{z}/{x}/{y}.png', {
         maxZoom: 19,
         minZoom: 12,
         tms: false,
@@ -53,7 +53,7 @@
 
       var smap = new OSMBuildings(map).load('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
 
-      var rmap =L.tileLayer('Tiles/bw/{z}/{x}/{y}.png', {
+      var rmap =L.tileLayer('Tiles/{z}/{x}/{y}.png', {
         maxZoom: 19,
         minZoom: 12,
         tms: false,
