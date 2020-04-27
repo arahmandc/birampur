@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <link rel="stylesheet" href="leaflet.css" />
 <!--   <link href="L.Control.Locate.min.css" rel="stylesheet"> -->
@@ -74,7 +75,7 @@
        var logo = L.control({position: 'bottomright'});
     logo.onAdd = function(map){
         var div = L.DomUtil.create('div', 'myclass');
-        div.innerHTML= "<a href='madmappers.github.io' target='_blank'><img height='50px' src='boil.png'/></a>";
+        div.innerHTML= "<a href='https://mapbd.github.io' target='_blank'><img height='50px' src='boil.png'/></a>";
         return div;
     }
     logo.addTo(map);
