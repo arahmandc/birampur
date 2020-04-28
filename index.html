@@ -21,6 +21,14 @@
             height: 100%;
             width: 100%;
         }
+        #mydive{
+          position:absolute;
+          z-index:1;
+          bottom: 0;
+          right: 0;
+          margin-bottom: 5px;
+          margin-right: 5px;
+        }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
@@ -71,15 +79,6 @@
 
       L.control.layers({'Birampur':baselayer},overlayMaps).addTo(map);
 
-          //logo position: bottomright, topright, topleft, bottomleft
-       var logo = L.control({position: 'bottomright'});
-    logo.onAdd = function(map){
-        var div = L.DomUtil.create('div', 'myclass');
-        div.innerHTML= "<a href='https://mapbd.github.io' target='_blank'><img height='50px' src='boil.png'/></a>";
-        return div;
-    }
-    logo.addTo(map);
-
 
     //Scale
     L.control.scale().addTo(map);
@@ -91,8 +90,8 @@
   </script>
 </head>
 <body oncontextmenu="return false;">
-  <div id="map">
-    </div>
+  <div id="map"></div>
+  <div id="mydive"><a href='https://mapbd.github.io' target='_blank'><img height='24px' src='mapbd.png'/></a></div> 
         <script language="JavaScript">
   /**
     * Disable right-click of mouse, F12 key, and save key combinations on page
