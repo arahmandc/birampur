@@ -8,7 +8,7 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <link rel="stylesheet" href="leaflet.css" />
-  <link href="L.Control.Locate.min.css" rel="stylesheet">
+  <link href="css/L.Control.Locate.min.css" rel="stylesheet">
   <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
   <style type="text/css">
     body {
@@ -39,7 +39,7 @@
   <script>
     $(document).ready(function () {
 
-      var map = L.map('map').setView([25.3921, 88.9546], 12);
+      var map = L.map('map').setView([25.3921, 88.9546], 13);
 
       // This is the Carto Positron basemap
         var hash = new L.Hash(map);
@@ -47,7 +47,7 @@
 
       var baselayer = L.tileLayer('gameimage/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        minZoom: 12,
+        minZoom: 13,
         attribution:''
       }).addTo(map);
 
@@ -85,57 +85,24 @@
 
     L.control.locate().addTo(map);
 
+    //bound box
+  var bounds_group = new L.featureGroup([]);
+  function setBounds() {
+  if (bounds_group.getLayers().length) {
+    map.fitBounds(bounds_group.getBounds());
+  }
+  map.setMaxBounds([[25.29,88.83],[25.49,89.09]]);
+}
+setBounds();
+
 
     })
   </script>
 </head>
-<body oncontextmenu="return false;">
+<body style="background-color: #C8AE89">
   <div id="map"></div>
   <div id="mydive"><a href='https://mapbd.github.io' target='_blank'><img height='24px' src='mapbd.png'/></a></div> 
-        <script language="JavaScript">
-  /**
-    * Disable right-click of mouse, F12 key, and save key combinations on page
-    * By Arthur Gareginyan (https://www.arthurgareginyan.com)
-    * For full source code, visit https://mycyberuniverse.com
-    */
-  window.onload = function() {
-    document.addEventListener("contextmenu", function(e){
-      e.preventDefault();
-    }, false);
-    document.addEventListener("keydown", function(e) {
-    //document.onkeydown = function(e) {
-      // "I" key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-        disabledEvent(e);
-      }
-      // "J" key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-        disabledEvent(e);
-      }
-      // "S" key + macOS
-      if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-        disabledEvent(e);
-      }
-      // "U" key
-      if (e.ctrlKey && e.keyCode == 85) {
-        disabledEvent(e);
-      }
-      // "F12" key
-      if (event.keyCode == 123) {
-        disabledEvent(e);
-      }
-    }, false);
-    function disabledEvent(e){
-      if (e.stopPropagation){
-        e.stopPropagation();
-      } else if (window.event){
-        window.event.cancelBubble = true;
-      }
-      e.preventDefault();
-      return false;
-    }
-  };
-</script>
+      
 
 </body>
 </html>
